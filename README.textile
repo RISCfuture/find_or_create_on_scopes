@@ -6,13 +6,19 @@ h1. find_or_create_on_scopes -- Conditional creators for ActiveRecord
 
 h2. About
 
-@find_or_create_on_scopes@ adds handy @find_or_create@-type methods to @ActiveRecord@. You can use these methods to conditionally create, initialize, or update records depending on the presence of similar records. They work on your base model class and any scopes derived therefrom. (See _Usage_ for examples.)
+@find_or_create_on_scopes@ adds handy @find_or_create@-type methods to
+@ActiveRecord@. You can use these methods to conditionally create, initialize,
+or update records depending on the presence of similar records. They work on
+your base model class and any scopes derived therefrom. (See _Usage_ for
+examples.)
 
 h2. Installation
 
-*Important Note:* This gem requires Ruby 1.9. Ruby 1.8 is not and will never be supported.
+*Important Note:* This gem requires Ruby 1.9. Ruby 1.8 is not and will never be
+supported.
 
-To install, simply add the @find_or_create_on_scopes@ gem to your Rails application's @Gemfile@:
+To install, simply add the @find_or_create_on_scopes@ gem to your Rails
+application's @Gemfile@:
 
 <pre><code>
 gem 'find_or_create_on_scopes'
@@ -20,7 +26,8 @@ gem 'find_or_create_on_scopes'
 
 h2. Usage
 
-See the @FindOrCreateOnScopes@ module documentation for the complete list of conditional creators/updaters. Some basic examples to give you an overview:
+See the @FindOrCreateOnScopes@ module documentation for the complete list of
+conditional creators/updaters. Some basic examples to give you an overview:
 
 <pre><code>
 # Tries to find a user named 'riscfuture'. If such a User exists, returns it. If
