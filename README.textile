@@ -26,7 +26,7 @@ gem 'find_or_create_on_scopes'
 
 h2. Usage
 
-See the @FindOrCreateOnScopes@ module documentation for the complete list of
+See the {FindOrCreateOnScopes} module documentation for the complete list of
 conditional creators/updaters. Some basic examples to give you an overview:
 
 <pre><code>

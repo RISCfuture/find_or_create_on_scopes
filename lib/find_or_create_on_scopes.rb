@@ -7,10 +7,10 @@ module FindOrCreateOnScopes
   # scope and @create_options@.
   #
   # @param [Hash] create_options Attributes to apply to the record if it's newly
-  # created.
+  #   created.
   # @yield [record] Yields the record before it is saved.
-  # @yieldparam [ActiveRecord::Base] The found or created record before it is
-  # saved.
+  # @yieldparam [ActiveRecord::Base] record The found or created record before
+  #   it is saved.
   # @return [ActiveRecord::Base] The found or created record.
 
   def find_or_create(create_options={}, &block)
@@ -40,10 +40,10 @@ module FindOrCreateOnScopes
   # current scope's options and @update_options@.
   #
   # @param [Hash] update_options Attributes to apply to the record whether or
-  # not it's newly created.
+  #   not it's newly created.
   # @yield [record] Yields the record before it is saved.
-  # @yieldparam [ActiveRecord::Base] The found or created record before it is
-  # saved.
+  # @yieldparam [ActiveRecord::Base] record The found or created record before
+  #   it is saved.
   # @return [ActiveRecord::Base] The found or created record.
 
   def create_or_update(update_options={}, &block)
