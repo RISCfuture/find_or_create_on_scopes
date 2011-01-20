@@ -1,4 +1,5 @@
 Bundler.require :default, :test
+require 'active_support/core_ext/module/delegation'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
