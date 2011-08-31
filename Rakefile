@@ -28,7 +28,7 @@ YARD::Rake::YardocTask.new('doc') do |doc|
   doc.options << "--protected"
   doc.options << "-r" << "README.textile"
   doc.options << "-o" << "doc"
-  doc.options << "--title" << "find_or_create_on_scopes Documentation".inspect
+  doc.options << "--title" << "find_or_create_on_scopes Documentation"
   
   doc.files = [ 'lib/**/*', 'README.textile' ]
 end
