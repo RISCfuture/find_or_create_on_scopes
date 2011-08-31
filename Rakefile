@@ -6,7 +6,7 @@ rescue LoadError
   exit 1
 end
 
-Bundler.require :default
+Bundler.require :default, :development
 
 Jeweler::Tasks.new do |gem|
   gem.name = "find_or_create_on_scopes"
@@ -17,6 +17,7 @@ Jeweler::Tasks.new do |gem|
   gem.authors = [ "Tim Morgan" ]
   gem.required_ruby_version = '>= 1.9'
   gem.add_dependency "activerecord", ">= 0"
+  gem.files = %w( lib/**/* README.textile LICENSE find_or_create_on_scopes.gemspec )
 end
 Jeweler::GemcutterTasks.new
 
