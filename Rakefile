@@ -1,13 +1,15 @@
-require 'rake'
+require 'rubygems'
+require 'bundler'
 begin
-  require 'bundler'
-rescue LoadError
-  puts "Bundler is not installed; install with `gem install bundler`."
-  exit 1
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
 end
+require 'rake'
 
-Bundler.require :default, :development
-
+require 'jeweler'
 Jeweler::Tasks.new do |gem|
   gem.name = "find_or_create_on_scopes"
   gem.summary = %Q{find_or_create-type methods on ActiveRecord scopes}
@@ -19,11 +21,12 @@ Jeweler::Tasks.new do |gem|
   gem.add_dependency "activerecord", ">= 0"
   gem.files = %w( lib/**/* README.textile LICENSE find_or_create_on_scopes.gemspec )
 end
-Jeweler::GemcutterTasks.new
+Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new
 
+require 'yard'
 YARD::Rake::YardocTask.new('doc') do |doc|
   doc.options << "-m" << "textile"
   doc.options << "--protected"
