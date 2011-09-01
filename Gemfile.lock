@@ -43,7 +43,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
-  activerecord
+  activerecord (>= 3.1)
   jeweler
   rspec
   sqlite3

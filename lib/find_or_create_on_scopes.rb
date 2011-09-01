@@ -3,26 +3,25 @@
 module FindOrCreateOnScopes
 
   # Locates a record according to the current scope. Returns the record if
-  # found. If not found, creates a new record with the options of the current
-  # scope and @create_options@.
+  # found. If not found, creates a new record with the attributes of the current
+  # scope and the provided attributes.
   #
-  # @param [Hash] create_options Attributes to apply to the record if it's newly
-  #   created.
+  # @param [Array] *args Arguments to pass to the @create@ method.
   # @yield [record] Yields the record before it is saved.
   # @yieldparam [ActiveRecord::Base] record The found or created record before
   #   it is saved.
   # @return [ActiveRecord::Base] The found or created record.
 
-  def find_or_create(create_options={}, &block)
-    find_or_initialize_and_do :save, create_options, &block
+  def find_or_create(*args, &block)
+    find_or_initialize_and_do :save, *args, &block
   end
 
   # Same as {#find_or_create} but calls @save!@ instead of @save@ on the record.
   #
   # @see #find_or_create
 
-  def find_or_create!(create_options={}, &block)
-    find_or_initialize_and_do :save!, create_options, &block
+  def find_or_create!(*args, &block)
+    find_or_initialize_and_do :save!, *args, &block
   end
 
   # Same as {#find_or_create} but does not save the record. Please note that
@@ -31,23 +30,22 @@ module FindOrCreateOnScopes
   #
   # @see #find_or_create
 
-  def find_or_initialize(init_options={}, &block)
-    find_or_initialize_and_do nil, init_options, &block
+  def find_or_initialize(*args, &block)
+    find_or_initialize_and_do nil, *args, &block
   end
 
   # Locates a record according to the current scope. Updates the record with
-  # @update_options@ if found. If not found, creates a new record with the
-  # current scope's options and @update_options@.
+  # the provided attributes if found. If not found, creates a new record with
+  # the current scope's attributes and the provided attributes.
   #
-  # @param [Hash] update_options Attributes to apply to the record whether or
-  #   not it's newly created.
+  # @param [Array] *args Arguments to pass to the @assign_attributes@ method.
   # @yield [record] Yields the record before it is saved.
   # @yieldparam [ActiveRecord::Base] record The found or created record before
   #   it is saved.
   # @return [ActiveRecord::Base] The found or created record.
 
-  def create_or_update(update_options={}, &block)
-    create_or_update_and_do :save, update_options, &block
+  def create_or_update(*args, &block)
+    create_or_update_and_do :save, *args, &block
   end
 
   # Same as {#create_or_update} but calls @save!@ instead of @save@ on the
@@ -55,27 +53,27 @@ module FindOrCreateOnScopes
   #
   # @see #create_or_update
 
-  def create_or_update!(update_options={}, &block)
-    create_or_update_and_do :save!, update_options, &block
+  def create_or_update!(*args, &block)
+    create_or_update_and_do :save!, *args, &block
   end
 
   private
 
-  def find_or_initialize_and_do(meth, options)
+  def find_or_initialize_and_do(meth, *args)
     record = nil
     transaction do
-      record = first || new(options)
+      record = first || new(*args)
       yield record if block_given?
       record.send(meth) if meth
     end
     return record
   end
 
-  def create_or_update_and_do(meth, options)
+  def create_or_update_and_do(meth, *args)
     record = nil
     transaction do
       record = first || new
-      record.attributes = options
+      record.assign_attributes *args
       yield record if block_given?
       record.send(meth) if meth
     end
