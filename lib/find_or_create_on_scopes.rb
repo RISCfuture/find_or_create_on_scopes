@@ -56,6 +56,16 @@ module FindOrCreateOnScopes
   def create_or_update!(*args, &block)
     create_or_update_and_do :save!, *args, &block
   end
+  
+  # Same as {#create_or_update} but does not save the record. Please note that
+  # unless this method is called in a transaction, you might have a race
+  # condition when trying to save the record.
+  #
+  # @see #create_or_update
+  
+  def initialize_or_update(*args, &block)
+    create_or_update_and_do nil, *args, &block
+  end
 
   private
 

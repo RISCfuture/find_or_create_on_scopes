@@ -46,12 +46,18 @@ describe FindOrCreateOnScopes do
   {
     :create_or_update => :save,
     :create_or_update! => :save!,
+    :initialize_or_update => nil
   }.each do |meth, saver|
     describe "##{meth}" do
       it "should find an object and update it if a matching one exists" do
         record = Option.create!(name: 'foo', value: 'bar')
-        Option.where(name: 'foo').send(meth, value: 'bar2').should eql(record)
-        record.reload.value.should eql('bar2')
+        if saver then
+          Option.where(name: 'foo').send(meth, value: 'bar2').should eql(record)
+          record.reload
+        else
+          record = Option.where(name: 'foo').send(meth, value: 'bar2')
+        end
+        record.value.should eql('bar2')
       end
 
       it "should create an object if a matching one does not exist" do
