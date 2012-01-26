@@ -1,3 +1,8 @@
+h1. Deprecation Notice
+
+In Rails 3.2, the `first_or_create`, `first_or_create!`, and
+`first_or_initialize` methods were introduced, obviating the need for this gem.
+
 h1. find_or_create_on_scopes -- Conditional creators for ActiveRecord
 
 | *Author* | Tim Morgan |
