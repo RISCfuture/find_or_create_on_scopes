@@ -7,8 +7,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'find_or_create_on_scopes'
 
 ActiveRecord::Base.establish_connection(
-  adapter: 'sqlite3',
-  database: 'test.sqlite'
+  :adapter => 'sqlite3',
+  :database => 'test.sqlite'
 )
 
 class Option < ActiveRecord::Base

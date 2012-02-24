@@ -32,10 +32,10 @@ conditional creators/updaters. Some basic examples to give you an overview:
 <pre><code>
 # Tries to find a user named 'riscfuture'. If such a User exists, returns it. If
 # not, creates a user and sets its password to '123'.
-User.where(login: 'riscfuture').find_or_create(password: '123')
+User.where(:login => 'riscfuture').find_or_create(:password => '123')
 
 # Tries to find a user named 'riscfuture'. If such a User exists, updates its
 # password to '123'. If not, creates a new user and sets its password to '123'.
 # Raises an exception if validation fails.
-User.where(login: 'riscfuture').create_or_update!(password: '123')
+User.where(:login => 'riscfuture').create_or_update!(:password => '123')
 </code></pre>
