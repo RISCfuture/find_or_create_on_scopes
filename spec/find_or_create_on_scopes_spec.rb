@@ -80,6 +80,14 @@ describe FindOrCreateOnScopes do
         record.field.should eql('foobar2')
       end
 
+      it "should not call #assign_attributes if no arguments are given" do
+        record = Option.where(name: 'foo').send(meth) { |u| u.field = 'foobar' }
+        record.field.should eql('foobar')
+
+        record = Option.where(name: 'foo').send(meth) { |u| u.field = "foobar2" }
+        record.field.should eql('foobar2')
+      end
+
       if saver then
         it "should call #{saver}" do
           record = Option.new

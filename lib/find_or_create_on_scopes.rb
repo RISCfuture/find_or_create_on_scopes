@@ -83,7 +83,7 @@ module FindOrCreateOnScopes
     record = nil
     transaction do
       record = first || new
-      record.assign_attributes *args
+      record.assign_attributes(*args) unless args.empty?
       yield record if block_given?
       record.send(meth) if meth
     end
