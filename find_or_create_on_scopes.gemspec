@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "find_or_create_on_scopes"
-  s.version = "1.2.0"
+  s.version = "1.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tim Morgan"]
-  s.date = "2011-09-13"
+  s.date = "2013-01-18"
   s.description = "Adds methods to ActiveRecord for conditionally finding, creating, or updating records."
   s.email = "git@timothymorgan.info"
   s.extra_rdoc_files = [
@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/riscfuture/find_or_create_on_scopes"
   s.require_paths = ["lib"]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9")
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.24"
   s.summary = "find_or_create-type methods on ActiveRecord scopes"
 
   if s.respond_to? :specification_version then
