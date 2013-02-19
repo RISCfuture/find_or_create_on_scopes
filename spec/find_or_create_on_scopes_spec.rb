@@ -27,9 +27,12 @@ describe FindOrCreateOnScopes do
       it "should yield the object to the block" do
         record = Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar" }
         record.field.should eql('foobar')
+      end
 
-        record = Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar2" }
-        record.field.should eql('foobar2')
+      it "should not yield a persisted object to the block" do
+        record = Option.create!(name: 'foo', field: 'foobar')
+        lambda { Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar2" } }.should_not change(Option, :count)
+        record.field.should eql('foobar')
       end
 
       if saver then
