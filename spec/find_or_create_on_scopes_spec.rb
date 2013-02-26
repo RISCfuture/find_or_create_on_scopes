@@ -42,6 +42,19 @@ describe FindOrCreateOnScopes do
           record.should_receive(saver).once.and_return(true)
           Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
         end
+
+        it "should ignore a duplicate key error and return the existing record" do
+          record = Option.create!(name: 'foo', value: 'bar')
+          Option.any_instance.stub(saver) do
+            if @once then record
+            else
+              @once = true
+              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'", nil)
+            end
+          end
+          Option.where(name: 'foo').send(meth, value: 'bar').id.should eql(record.id)
+          Option.count.should eql(1)
+        end
       end
     end
   end
@@ -97,6 +110,21 @@ describe FindOrCreateOnScopes do
           Option.stub!(:new).and_return(record)
           record.should_receive(saver).and_return(true)
           Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
+        end
+
+        it "should ignore a duplicate key error and update the existing record" do
+          record = Option.create!(name: 'foo', value: 'bar')
+          Option.any_instance.stub(saver) do
+            if @once then
+              record.value = 'bar2'
+              record.send :update
+            else
+              @once = true
+              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'", nil)
+            end
+          end
+          Option.where(name: 'foo').send(meth, value: 'bar2').id.should eql(record.id)
+          record.reload.value.should eql('bar2')
         end
       end
     end

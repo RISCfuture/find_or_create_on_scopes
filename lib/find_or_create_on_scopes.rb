@@ -56,13 +56,13 @@ module FindOrCreateOnScopes
   def create_or_update!(*args, &block)
     create_or_update_and_do :save!, *args, &block
   end
-  
+
   # Same as {#create_or_update} but does not save the record. Please note that
   # unless this method is called in a transaction, you might have a race
   # condition when trying to save the record.
   #
   # @see #create_or_update
-  
+
   def initialize_or_update(*args, &block)
     create_or_update_and_do nil, *args, &block
   end
@@ -77,6 +77,21 @@ module FindOrCreateOnScopes
       record.send(meth) if meth
     end
     return record
+  rescue => err
+    if (defined?(Mysql2::Error) && err.kind_of?(Mysql2::Error)) ||
+        (defined?(PG::Error) && err.kind_of?(PG::Error)) ||
+        (defined?(ActiveRecord::JDBCError) && err.kind_of?(ActiveRecord::JDBCError)) ||
+        err.kind_of?(ActiveRecord::ActiveRecordError)
+      if err.to_s.include?('duplicate key value violates unique constraint') ||
+          err.to_s.start_with?('Duplicate entry') ||
+          err.kind_of?(ActiveRecord::RecordNotUnique)
+        retry
+      else
+        raise
+      end
+    else
+      raise
+    end
   end
 
   def create_or_update_and_do(meth, *args)
@@ -88,6 +103,21 @@ module FindOrCreateOnScopes
       record.send(meth) if meth
     end
     return record
+  rescue => err
+    if (defined?(Mysql2::Error) && err.kind_of?(Mysql2::Error)) ||
+        (defined?(PG::Error) && err.kind_of?(PG::Error)) ||
+        (defined?(ActiveRecord::JDBCError) && err.kind_of?(ActiveRecord::JDBCError)) ||
+        err.kind_of?(ActiveRecord::ActiveRecordError)
+      if err.to_s.include?('duplicate key value violates unique constraint') ||
+          err.to_s.start_with?('Duplicate entry') ||
+          err.kind_of?(ActiveRecord::RecordNotUnique)
+        retry
+      else
+        raise err
+      end
+    else
+      raise err
+    end
   end
 end
 
