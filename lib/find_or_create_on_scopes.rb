@@ -73,8 +73,10 @@ module FindOrCreateOnScopes
     record = nil
     transaction do
       record = first || new(*args)
-      yield record if block_given? && record.new_record?
-      record.send(meth) if meth
+      if record.new_record?
+        yield record if block_given?
+        record.send(meth) if meth
+      end
     end
     return record
   rescue => err

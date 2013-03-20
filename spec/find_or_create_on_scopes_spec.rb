@@ -43,6 +43,12 @@ describe FindOrCreateOnScopes do
           Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
         end
 
+        it "should not call #{saver} on an existing record" do
+          record = Option.create!(name: 'foo', value: 'bar')
+          record.should_not_receive(saver)
+          Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
+        end
+
         it "should ignore a duplicate key error and return the existing record" do
           record = Option.create!(name: 'foo', value: 'bar')
           Option.any_instance.stub(saver) do
