@@ -123,7 +123,7 @@ describe FindOrCreateOnScopes do
           Option.any_instance.stub(saver) do
             if @once then
               record.value = 'bar2'
-              record.send :update
+              record.send :update_record
             else
               @once = true
               raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'", nil)
