@@ -7,7 +7,7 @@ group :development do
   # DEVELOPMENT
   gem 'jeweler'
   gem 'yard'
-  gem 'RedCloth', require: 'redcloth'
+  gem 'redcarpet', require: nil
   gem 'sqlite3'
 
   # TEST

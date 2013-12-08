@@ -1,4 +1,4 @@
-# Adds @find_or_create@-type methods to named scopes.
+# Adds `find_or_create`-type methods to named scopes.
 
 module FindOrCreateOnScopes
 
@@ -6,7 +6,7 @@ module FindOrCreateOnScopes
   # found. If not found, creates a new record with the attributes of the current
   # scope and the provided attributes.
   #
-  # @param [Array] *args Arguments to pass to the @create@ method.
+  # @param [Array] args Arguments to pass to the `create` method.
   # @yield [record] Yields the record before it is saved.
   # @yieldparam [ActiveRecord::Base] record The found or created record before
   #   it is saved.
@@ -16,7 +16,7 @@ module FindOrCreateOnScopes
     find_or_initialize_and_do :save, *args, &block
   end
 
-  # Same as {#find_or_create} but calls @save!@ instead of @save@ on the record.
+  # Same as {#find_or_create} but calls `save!` instead of `save` on the record.
   #
   # @see #find_or_create
 
@@ -38,7 +38,7 @@ module FindOrCreateOnScopes
   # the provided attributes if found. If not found, creates a new record with
   # the current scope's attributes and the provided attributes.
   #
-  # @param [Array] *args Arguments to pass to the @assign_attributes@ method.
+  # @param [Array] args Arguments to pass to the `assign_attributes` method.
   # @yield [record] Yields the record before it is saved.
   # @yieldparam [ActiveRecord::Base] record The found or created record before
   #   it is saved.
@@ -48,7 +48,7 @@ module FindOrCreateOnScopes
     create_or_update_and_do :save, *args, &block
   end
 
-  # Same as {#create_or_update} but calls @save!@ instead of @save@ on the
+  # Same as {#create_or_update} but calls `save!` instead of `save` on the
   # record.
   #
   # @see #create_or_update
