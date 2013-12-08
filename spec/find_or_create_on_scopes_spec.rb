@@ -38,7 +38,7 @@ describe FindOrCreateOnScopes do
       if saver then
         it "should call #{saver}" do
           record = Option.new
-          Option.stub!(:new).and_return(record)
+          Option.stub(:new).and_return(record)
           record.should_receive(saver).once.and_return(true)
           Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
         end
@@ -113,7 +113,7 @@ describe FindOrCreateOnScopes do
       if saver then
         it "should call #{saver}" do
           record = Option.new
-          Option.stub!(:new).and_return(record)
+          Option.stub(:new).and_return(record)
           record.should_receive(saver).and_return(true)
           Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
         end
