@@ -9,57 +9,57 @@ describe FindOrCreateOnScopes do
     describe "##{meth}" do
       it "should find an object if a matching one exists" do
         record = Option.create!(name: 'foo', value: 'bar')
-        Option.where(name: 'foo').send(meth, value: 'bar2').should eql(record)
+        expect(Option.where(name: 'foo').send(meth, value: 'bar2')).to eql(record)
       end
 
       it "should create an object if a matching one does not exist" do
         Option.create!(name: 'foo2', value: 'bar2')
         record = Option.where(name: 'foo').send(meth, value: 'bar2')
-        record.name.should eql('foo')
-        record.value.should eql('bar2')
+        expect(record.name).to eql('foo')
+        expect(record.value).to eql('bar2')
       end
 
       it "should do so in a transaction" do
-        Option.should_receive(:transaction)
+        expect(Option).to receive(:transaction)
         Option.where(name: 'foo').send(meth, value: 'bar')
       end
 
       it "should yield the object to the block" do
         record = Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar" }
-        record.field.should eql('foobar')
+        expect(record.field).to eql('foobar')
       end
 
       it "should not yield a persisted object to the block" do
         record = Option.create!(name: 'foo', field: 'foobar')
-        lambda { Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar2" } }.should_not change(Option, :count)
-        record.field.should eql('foobar')
+        expect { Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar2" } }.not_to change(Option, :count)
+        expect(record.field).to eql('foobar')
       end
 
       if saver then
         it "should call #{saver}" do
           record = Option.new
-          Option.stub(:new).and_return(record)
-          record.should_receive(saver).once.and_return(true)
-          Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
+          allow(Option).to receive(:new).and_return(record)
+          expect(record).to receive(saver).once.and_return(true)
+          expect(Option.where(name: 'foo').send(meth, value: 'bar')).to eql(record)
         end
 
         it "should not call #{saver} on an existing record" do
           record = Option.create!(name: 'foo', value: 'bar')
-          record.should_not_receive(saver)
-          Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
+          expect(record).not_to receive(saver)
+          expect(Option.where(name: 'foo').send(meth, value: 'bar')).to eql(record)
         end
 
         it "should ignore a duplicate key error and return the existing record" do
           record = Option.create!(name: 'foo', value: 'bar')
-          Option.any_instance.stub(saver) do
+          allow_any_instance_of(Option).to receive(saver) do
             if @once then record
             else
               @once = true
               raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'", nil)
             end
           end
-          Option.where(name: 'foo').send(meth, value: 'bar').id.should eql(record.id)
-          Option.count.should eql(1)
+          expect(Option.where(name: 'foo').send(meth, value: 'bar').id).to eql(record.id)
+          expect(Option.count).to eql(1)
         end
       end
     end
@@ -74,53 +74,53 @@ describe FindOrCreateOnScopes do
       it "should find an object and update it if a matching one exists" do
         record = Option.create!(name: 'foo', value: 'bar')
         if saver then
-          Option.where(name: 'foo').send(meth, value: 'bar2').should eql(record)
+          expect(Option.where(name: 'foo').send(meth, value: 'bar2')).to eql(record)
           record.reload
         else
           record = Option.where(name: 'foo').send(meth, value: 'bar2')
         end
-        record.value.should eql('bar2')
+        expect(record.value).to eql('bar2')
       end
 
       it "should create an object if a matching one does not exist" do
         Option.create!(name: 'foo2', value: 'bar2')
         record = Option.where(name: 'foo').send(meth, value: 'bar')
-        record.name.should eql('foo')
-        record.value.should eql('bar')
+        expect(record.name).to eql('foo')
+        expect(record.value).to eql('bar')
       end
 
       it "should do so in a transaction" do
-        Option.should_receive(:transaction)
+        expect(Option).to receive(:transaction)
         Option.where(name: 'foo').send(meth, value: 'bar')
       end
 
       it "should yield the object to the block" do
         record = Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar" }
-        record.field.should eql('foobar')
+        expect(record.field).to eql('foobar')
 
         record = Option.where(name: 'foo').send(meth, value: 'bar') { |u| u.field = "foobar2" }
-        record.field.should eql('foobar2')
+        expect(record.field).to eql('foobar2')
       end
 
       it "should not call #assign_attributes if no arguments are given" do
         record = Option.where(name: 'foo').send(meth) { |u| u.field = 'foobar' }
-        record.field.should eql('foobar')
+        expect(record.field).to eql('foobar')
 
         record = Option.where(name: 'foo').send(meth) { |u| u.field = "foobar2" }
-        record.field.should eql('foobar2')
+        expect(record.field).to eql('foobar2')
       end
 
       if saver then
         it "should call #{saver}" do
           record = Option.new
-          Option.stub(:new).and_return(record)
-          record.should_receive(saver).and_return(true)
-          Option.where(name: 'foo').send(meth, value: 'bar').should eql(record)
+          allow(Option).to receive(:new).and_return(record)
+          expect(record).to receive(saver).and_return(true)
+          expect(Option.where(name: 'foo').send(meth, value: 'bar')).to eql(record)
         end
 
         it "should ignore a duplicate key error and update the existing record" do
           record = Option.create!(name: 'foo', value: 'bar')
-          Option.any_instance.stub(saver) do
+          allow_any_instance_of(Option).to receive(saver) do
             if @once then
               record.value = 'bar2'
               record.send :update_record
@@ -129,8 +129,8 @@ describe FindOrCreateOnScopes do
               raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'", nil)
             end
           end
-          Option.where(name: 'foo').send(meth, value: 'bar2').id.should eql(record.id)
-          record.reload.value.should eql('bar2')
+          expect(Option.where(name: 'foo').send(meth, value: 'bar2').id).to eql(record.id)
+          expect(record.reload.value).to eql('bar2')
         end
       end
     end
