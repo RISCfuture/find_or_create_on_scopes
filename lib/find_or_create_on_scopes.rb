@@ -113,7 +113,20 @@ module FindOrCreateOnScopes
       if err.to_s.include?('duplicate key value violates unique constraint') ||
           err.to_s.start_with?('Duplicate entry') ||
           err.kind_of?(ActiveRecord::RecordNotUnique)
-        retry
+
+        # sadly there's no way to tell which keys are the duplicate ones from a
+        # SQL error, so we just retry 3 times and then give up :/
+        if @_focos_retries
+          if @_focos_retries > 3
+            raise
+          else
+            @_focos_retries += 1
+            retry
+          end
+        else
+          @_focos_retries = 1
+          retry
+        end
       else
         raise err
       end

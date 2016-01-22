@@ -132,6 +132,11 @@ describe FindOrCreateOnScopes do
           expect(Option.where(name: 'foo').send(meth, value: 'bar2').id).to eql(record.id)
           expect(record.reload.value).to eql('bar2')
         end
+
+        it "should not ignore a duplicate key error if it's not a key from the scope" do
+          record = Option.create!(name: 'foo', value: 'bar', uniq: '123')
+          expect { Option.where(name: 'foo2').send(meth, value: 'bar2', uniq: '123') }.to raise_error(ActiveRecord::RecordNotUnique)
+        end
       end
     end
   end

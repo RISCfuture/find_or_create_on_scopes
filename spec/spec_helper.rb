@@ -18,6 +18,7 @@ end
 RSpec.configure do |config|
   config.before(:each) do
     Option.connection.execute "DROP TABLE IF EXISTS options"
-    Option.connection.execute "CREATE TABLE options (id INTEGER PRIMARY KEY ASC, name VARCHAR(127) NOT NULL, value VARCHAR(255))"
+    Option.connection.execute "CREATE TABLE options (id INTEGER PRIMARY KEY ASC, name VARCHAR(127) NOT NULL, value VARCHAR(255), uniq VARCHAR(127))"
+    Option.connection.execute "CREATE UNIQUE INDEX IF NOT EXISTS options_unique ON options(uniq)"
   end
 end
