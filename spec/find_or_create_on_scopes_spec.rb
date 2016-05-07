@@ -61,6 +61,13 @@ describe FindOrCreateOnScopes do
           expect(Option.where(name: 'foo').send(meth, value: 'bar').id).to eql(record.id)
           expect(Option.count).to eql(1)
         end
+
+        it "should not save the record if ABORT_SAVE is returned from the block" do
+          record = Option.new
+          allow(Option).to receive(:new).and_return(record)
+          expect(record).not_to receive(saver)
+          expect(Option.where(name: 'foo').send(meth, value: 'bar') { FindOrCreateOnScopes::ABORT_SAVE }).to eql(record)
+        end
       end
     end
   end
@@ -136,6 +143,13 @@ describe FindOrCreateOnScopes do
         it "should not ignore a duplicate key error if it's not a key from the scope" do
           record = Option.create!(name: 'foo', value: 'bar', uniq: '123')
           expect { Option.where(name: 'foo2').send(meth, value: 'bar2', uniq: '123') }.to raise_error(ActiveRecord::RecordNotUnique)
+        end
+
+        it "should not save the record if ABORT_SAVE is returned from the block" do
+          record = Option.new
+          allow(Option).to receive(:new).and_return(record)
+          expect(record).not_to receive(saver)
+          expect(Option.where(name: 'foo').send(meth, value: 'bar') { FindOrCreateOnScopes::ABORT_SAVE }).to eql(record)
         end
       end
     end

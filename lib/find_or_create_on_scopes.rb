@@ -2,6 +2,10 @@
 
 module FindOrCreateOnScopes
 
+  # Return this in a block from `find_or_create` or `create_or_update` to abort
+  # the creation/updating of a record.
+  ABORT_SAVE = Object.new
+
   # Locates a record according to the current scope. Returns the record if
   # found. If not found, creates a new record with the attributes of the current
   # scope and the provided attributes.
@@ -10,6 +14,7 @@ module FindOrCreateOnScopes
   # @yield [record] Yields the record before it is saved.
   # @yieldparam [ActiveRecord::Base] record The found or created record before
   #   it is saved.
+  # @yieldreturn [ABORT_SAVE, nil] If `ABORT_SAVE` the record is not saved.
   # @return [ActiveRecord::Base] The found or created record.
 
   def find_or_create(*args, &block)
@@ -42,6 +47,7 @@ module FindOrCreateOnScopes
   # @yield [record] Yields the record before it is saved.
   # @yieldparam [ActiveRecord::Base] record The found or created record before
   #   it is saved.
+  # @yieldreturn [ABORT_SAVE, nil] If `ABORT_SAVE` the record is not saved.
   # @return [ActiveRecord::Base] The found or created record.
 
   def create_or_update(*args, &block)
@@ -74,8 +80,8 @@ module FindOrCreateOnScopes
     transaction do
       record = first || new(*args)
       if record.new_record?
-        yield record if block_given?
-        record.send(meth) if meth
+        result = block_given? ? yield(record) : nil
+        record.send(meth) if meth && result != ABORT_SAVE
       end
     end
     return record
@@ -101,8 +107,8 @@ module FindOrCreateOnScopes
     transaction do
       record = first || new
       record.assign_attributes(*args) unless args.empty?
-      yield record if block_given?
-      record.send(meth) if meth
+      result = block_given? ? yield(record) : nil
+      record.send(meth) if meth && result != ABORT_SAVE
     end
     return record
   rescue => err
