@@ -9,8 +9,8 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
+require 'juwelier'
+Juwelier::Tasks.new do |gem|
   gem.name = 'find_or_create_on_scopes'
   gem.summary = %Q{find_or_create-type methods on ActiveRecord scopes}
   gem.description = %Q{Adds methods to ActiveRecord for conditionally finding, creating, or updating records.}
@@ -20,7 +20,7 @@ Jeweler::Tasks.new do |gem|
   gem.required_ruby_version = '>= 1.9'
   gem.files = %w( lib/**/* README.md LICENSE find_or_create_on_scopes.gemspec )
 end
-Jeweler::RubygemsDotOrgTasks.new
+Juwelier::RubygemsDotOrgTasks.new
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new
