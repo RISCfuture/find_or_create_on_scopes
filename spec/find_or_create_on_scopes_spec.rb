@@ -55,7 +55,7 @@ describe FindOrCreateOnScopes do
             if @once then record
             else
               @once = true
-              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'", nil)
+              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'")
             end
           end
           expect(Option.where(name: 'foo').send(meth, value: 'bar').id).to eql(record.id)
@@ -133,7 +133,7 @@ describe FindOrCreateOnScopes do
               record.send :_update_record
             else
               @once = true
-              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'", nil)
+              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'")
             end
           end
           expect(Option.where(name: 'foo').send(meth, value: 'bar2').id).to eql(record.id)
