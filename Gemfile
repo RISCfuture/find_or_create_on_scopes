@@ -8,7 +8,7 @@ group :development do
   gem 'juwelier'
   gem 'yard'
   gem 'redcarpet', require: nil, platform: :mri
-  gem 'sqlite3', '~> 1.3.6', platform: :mri
+  gem 'sqlite3', platform: :mri
   gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
 
   # TEST
