@@ -5,11 +5,11 @@ gem 'activerecord', '>= 5.0', require: 'active_record'
 
 group :development do
   # DEVELOPMENT
+  gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
   gem 'juwelier'
-  gem 'yard'
   gem 'redcarpet', require: nil, platform: :mri
   gem 'sqlite3', platform: :mri
-  gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
+  gem 'yard'
 
   # TEST
   gem 'rspec'

@@ -3,8 +3,8 @@ require 'bundler'
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
+  warn e.message
+  warn "Run `bundle install` to install missing gems"
   exit e.status_code
 end
 require 'rake'
@@ -12,13 +12,13 @@ require 'rake'
 require 'juwelier'
 Juwelier::Tasks.new do |gem|
   gem.name = 'find_or_create_on_scopes'
-  gem.summary = %Q{find_or_create-type methods on ActiveRecord scopes}
-  gem.description = %Q{Adds methods to ActiveRecord for conditionally finding, creating, or updating records.}
+  gem.summary = %(find_or_create-type methods on ActiveRecord scopes)
+  gem.description = %(Adds methods to ActiveRecord for conditionally finding, creating, or updating records.)
   gem.email = 'git@timothymorgan.info'
   gem.homepage = 'http://github.com/riscfuture/find_or_create_on_scopes'
-  gem.authors = [ "Tim Morgan" ]
+  gem.authors = ["Tim Morgan"]
   gem.required_ruby_version = '>= 1.9'
-  gem.files = %w( lib/**/* README.md LICENSE find_or_create_on_scopes.gemspec )
+  gem.files = %w[lib/**/* README.md LICENSE find_or_create_on_scopes.gemspec]
 end
 Juwelier::RubygemsDotOrgTasks.new
 
@@ -42,7 +42,7 @@ YARD::Rake::YardocTask.new('doc') do |doc|
   doc.options << '-o' << 'doc'
   doc.options << '--title' << 'find_or_create_on_scopes Documentation'
 
-  doc.files = %w(lib/**/* README.md)
+  doc.files = %w[lib/**/* README.md]
 end
 
 task(default: :spec)

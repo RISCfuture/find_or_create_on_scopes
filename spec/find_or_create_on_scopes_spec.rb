@@ -2,9 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe FindOrCreateOnScopes do
   {
-    :find_or_create => :save,
-    :find_or_create! => :save!,
-    :find_or_initialize => nil
+      find_or_create:     :save,
+      find_or_create!:    :save!,
+      find_or_initialize: nil
   }.each do |meth, saver|
     describe "##{meth}" do
       it "should find an object if a matching one exists" do
@@ -35,7 +35,7 @@ describe FindOrCreateOnScopes do
         expect(record.field).to eql('foobar')
       end
 
-      if saver then
+      if saver
         it "should call #{saver}" do
           record = Option.new
           allow(Option).to receive(:new).and_return(record)
@@ -55,11 +55,11 @@ describe FindOrCreateOnScopes do
             if @once then record
             else
               @once = true
-              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'")
+              raise ActiveRecord::RecordNotUnique, "Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'"
             end
           end
           expect(Option.where(name: 'foo').send(meth, value: 'bar').id).to eql(record.id)
-          expect(Option.count).to eql(1)
+          expect(Option.count).to be(1)
         end
 
         it "should not save the record if ABORT_SAVE is returned from the block" do
@@ -73,14 +73,14 @@ describe FindOrCreateOnScopes do
   end
 
   {
-    :create_or_update => :save,
-    :create_or_update! => :save!,
-    :initialize_or_update => nil
+      create_or_update:     :save,
+      create_or_update!:    :save!,
+      initialize_or_update: nil
   }.each do |meth, saver|
     describe "##{meth}" do
       it "should find an object and update it if a matching one exists" do
         record = Option.create!(name: 'foo', value: 'bar')
-        if saver then
+        if saver
           expect(Option.where(name: 'foo').send(meth, value: 'bar2')).to eql(record)
           record.reload
         else
@@ -117,7 +117,7 @@ describe FindOrCreateOnScopes do
         expect(record.field).to eql('foobar2')
       end
 
-      if saver then
+      if saver
         it "should call #{saver}" do
           record = Option.new
           allow(Option).to receive(:new).and_return(record)
@@ -128,12 +128,12 @@ describe FindOrCreateOnScopes do
         it "should ignore a duplicate key error and update the existing record" do
           record = Option.create!(name: 'foo', value: 'bar')
           allow_any_instance_of(Option).to receive(saver) do
-            if @once then
+            if @once
               record.value = 'bar2'
               record.send :_update_record
             else
               @once = true
-              raise ActiveRecord::RecordNotUnique.new("Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'")
+              raise ActiveRecord::RecordNotUnique, "Duplicate entry 'foo@bar.com' for key 'index_email_addresses_on_email'"
             end
           end
           expect(Option.where(name: 'foo').send(meth, value: 'bar2').id).to eql(record.id)
@@ -141,7 +141,7 @@ describe FindOrCreateOnScopes do
         end
 
         it "should not ignore a duplicate key error if it's not a key from the scope" do
-          record = Option.create!(name: 'foo', value: 'bar', uniq: '123')
+          Option.create! name: 'foo', value: 'bar', uniq: '123'
           expect { Option.where(name: 'foo2').send(meth, value: 'bar2', uniq: '123') }.to raise_error(ActiveRecord::RecordNotUnique)
         end
 

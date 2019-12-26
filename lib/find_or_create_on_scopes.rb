@@ -85,14 +85,14 @@ module FindOrCreateOnScopes
       end
     end
     return record
-  rescue => err
-    if (defined?(Mysql2::Error) && err.kind_of?(Mysql2::Error)) ||
-        (defined?(PG::Error) && err.kind_of?(PG::Error)) ||
-        (defined?(ActiveRecord::JDBCError) && err.kind_of?(ActiveRecord::JDBCError)) ||
-        err.kind_of?(ActiveRecord::ActiveRecordError)
-      if err.to_s.include?('duplicate key value violates unique constraint') ||
-          err.to_s.start_with?('Duplicate entry') ||
-          err.kind_of?(ActiveRecord::RecordNotUnique)
+  rescue StandardError => e
+    if (defined?(Mysql2::Error) && e.kind_of?(Mysql2::Error)) ||
+        (defined?(PG::Error) && e.kind_of?(PG::Error)) ||
+        (defined?(ActiveRecord::JDBCError) && e.kind_of?(ActiveRecord::JDBCError)) ||
+        e.kind_of?(ActiveRecord::ActiveRecordError)
+      if e.to_s.include?('duplicate key value violates unique constraint') ||
+          e.to_s.start_with?('Duplicate entry') ||
+          e.kind_of?(ActiveRecord::RecordNotUnique)
         retry
       else
         raise
@@ -111,14 +111,14 @@ module FindOrCreateOnScopes
       record.send(meth) if meth && result != ABORT_SAVE
     end
     return record
-  rescue => err
-    if (defined?(Mysql2::Error) && err.kind_of?(Mysql2::Error)) ||
-        (defined?(PG::Error) && err.kind_of?(PG::Error)) ||
-        (defined?(ActiveRecord::JDBCError) && err.kind_of?(ActiveRecord::JDBCError)) ||
-        err.kind_of?(ActiveRecord::ActiveRecordError)
-      if err.to_s.include?('duplicate key value violates unique constraint') ||
-          err.to_s.start_with?('Duplicate entry') ||
-          err.kind_of?(ActiveRecord::RecordNotUnique)
+  rescue StandardError => e
+    if (defined?(Mysql2::Error) && e.kind_of?(Mysql2::Error)) ||
+        (defined?(PG::Error) && e.kind_of?(PG::Error)) ||
+        (defined?(ActiveRecord::JDBCError) && e.kind_of?(ActiveRecord::JDBCError)) ||
+        e.kind_of?(ActiveRecord::ActiveRecordError)
+      if e.to_s.include?('duplicate key value violates unique constraint') ||
+          e.to_s.start_with?('Duplicate entry') ||
+          e.kind_of?(ActiveRecord::RecordNotUnique)
 
         # sadly there's no way to tell which keys are the duplicate ones from a
         # SQL error, so we just retry 3 times and then give up :/
@@ -134,12 +134,12 @@ module FindOrCreateOnScopes
           retry
         end
       else
-        raise err
+        raise e
       end
     else
-      raise err
+      raise e
     end
   end
 end
 
-ActiveRecord::Relation.send :include, FindOrCreateOnScopes
+ActiveRecord::Relation.include FindOrCreateOnScopes

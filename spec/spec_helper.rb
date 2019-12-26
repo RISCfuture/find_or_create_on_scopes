@@ -1,4 +1,5 @@
-Bundler.require :default, :test
+require 'bundler'
+Bundler.require :default, :development
 require 'active_support/core_ext/module/delegation'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
@@ -7,7 +8,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'find_or_create_on_scopes'
 
 ActiveRecord::Base.establish_connection(
-  adapter: 'sqlite3',
+  adapter:  'sqlite3',
   database: 'test.sqlite'
 )
 
