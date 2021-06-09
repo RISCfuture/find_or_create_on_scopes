@@ -1,6 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require File.expand_path("#{File.dirname(__FILE__)}/spec_helper")
 
-describe FindOrCreateOnScopes do
+RSpec.describe FindOrCreateOnScopes do
   {
       find_or_create:     :save,
       find_or_create!:    :save!,

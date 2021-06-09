@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Tim Morgan".freeze]
-  s.date = "2016-05-07"
   s.description = "Adds methods to ActiveRecord for conditionally finding, creating, or updating records.".freeze
   s.email = "git@timothymorgan.info".freeze
   s.extra_rdoc_files = [
