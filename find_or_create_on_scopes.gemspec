@@ -48,7 +48,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency('redcarpet'.freeze, [">= 0"])
       s.add_development_dependency('rspec'.freeze, [">= 0"])
       s.add_development_dependency('sqlite3'.freeze, [">= 0"])
-      s.add_dependency('activerecord'.freeze, [">= 3.1"])
     else
       s.add_dependency('activerecord'.freeze, [">= 3.1"])
       s.add_dependency('activerecord-jdbcsqlite3-adapter'.freeze, [">= 0"])
