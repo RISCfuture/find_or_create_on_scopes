@@ -3,11 +3,11 @@
 # Instead, edit Juwelier::Tasks in Rakefile, and run 'rake gemspec'
 # -*- encoding: utf-8 -*-
 
-# stub: find_or_create_on_scopes 1.5.0 ruby lib
+# stub: find_or_create_on_scopes 1.5.1 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "find_or_create_on_scopes".freeze
-  s.version = "1.5.0"
+  s.version = "1.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
@@ -27,7 +27,16 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/riscfuture/find_or_create_on_scopes".freeze
   s.required_ruby_version = Gem::Requirement.new(">= 1.9".freeze)
   s.rubygems_version = "2.6.3".freeze
-  s.summary = "find_or_create-type methods on ActiveRecord scopes".freeze
+  s.summary = "[DEPRECATED] find_or_create-type methods on ActiveRecord scopes".freeze
+  s.post_install_message = <<~MSG
+
+    ⚠️  DEPRECATED: find_or_create_on_scopes is no longer maintained.
+
+    No longer maintained. ActiveRecord's `find_or_create_by` plus relation scoping covers similar use cases on modern Rails.
+
+    This is the final release. No further updates are planned.
+
+  MSG
 
   if s.respond_to? :specification_version
     s.specification_version = 4

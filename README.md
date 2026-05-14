@@ -1,3 +1,7 @@
+> ⚠️ **DEPRECATED:** `find_or_create_on_scopes` is no longer maintained.
+> ActiveRecord's `find_or_create_by` plus relation scoping covers similar use
+> cases on modern Rails. The final release is v1.5.1.
+
 find_or_create_on_scopes
 ========================
 
